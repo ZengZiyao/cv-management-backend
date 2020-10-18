@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/cv")
+@CrossOrigin
 public class CvController {
 
     private final CvService cvService;
@@ -22,33 +23,37 @@ public class CvController {
     }
 
     @GetMapping("/{cvId}")
-    public ResponseEntity getCvById(@PathVariable String cvId) {
+    public ResponseEntity<CvResponse> getCvById(@PathVariable String cvId) {
         CvResponse cvResponse = cvService.getCvById(cvId);
         return ResponseEntity.ok(cvResponse);
     }
 
     @PostMapping("")
-    public ResponseEntity postCv(@RequestBody CvDto cvDto) {
+    public ResponseEntity<Map<String, String>> postCv(@RequestBody CvDto cvDto) {
         String cvId = cvService.postCv(cvDto);
 
         Map<String, String> map = new HashMap<>();
         map.put("cvId", cvId);
 
-        return new ResponseEntity(map, HttpStatus.CREATED);
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{cvId}")
-    public ResponseEntity deleteCvById(@PathVariable String cvId) {
+    public ResponseEntity<Map> deleteCvById(@PathVariable String cvId) {
         cvService.deleteCv(cvId);
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "cv deleted");
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(map);
     }
 
     @PatchMapping("/{cvId}")
-    public ResponseEntity patchCvById(@PathVariable String cvId, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Map> patchCvById(@PathVariable String cvId, @RequestBody Map<String, Object> updates) {
 
         cvService.updateCv(cvId, updates);
-        return ResponseEntity.ok("cv updated");
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "cv updated");
+        return ResponseEntity.ok(map);
     }
 
 

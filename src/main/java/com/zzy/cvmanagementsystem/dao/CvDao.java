@@ -1,7 +1,7 @@
 package com.zzy.cvmanagementsystem.dao;
 
 import com.zzy.cvmanagementsystem.dto.CvDto;
-import com.zzy.cvmanagementsystem.model.JobExperience;
+import com.zzy.cvmanagementsystem.model.WorkExperience;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -49,7 +49,7 @@ public class CvDao {
 
     @Getter
     @Setter
-    private List<JobExperience> jobExperiences;
+    private List<WorkExperience> workExperiences;
 
     public static CvDao fromDto(CvDto cvDto) {
         CvDao cvDao = new CvDao();
@@ -60,7 +60,7 @@ public class CvDao {
         cvDao.setAvatar(cvDto.getAvatar());
         cvDao.setAwards(cvDto.getAwards());
         cvDao.setPublications(cvDto.getPublications());
-        cvDao.setJobExperiences(cvDto.getJobExperiences());
+        cvDao.setWorkExperiences(cvDto.getWorkExperiences());
 
         return cvDao;
     }
@@ -89,8 +89,8 @@ public class CvDao {
                 case "publications":
                     this.setPublications((List<String>) entry.getValue());
                     break;
-                case "jobExperience":
-                    this.setJobExperiences((List<JobExperience>) entry.getValue());
+                case "workExperiences":
+                    this.setWorkExperiences((List<WorkExperience>) entry.getValue());
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.zzy.cvmanagementsystem.dto;
 
 import com.zzy.cvmanagementsystem.dao.CvDao;
-import com.zzy.cvmanagementsystem.model.JobExperience;
+import com.zzy.cvmanagementsystem.model.WorkExperience;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +31,10 @@ public class CvResponse {
 
     private List<String> publications;
 
-    private List<JobExperience> jobExperiences;
+    private List<WorkExperience> workExperiences;
 
     public static CvResponse fromDao(CvDao cvDao) {
-        return new CvResponse(cvDao.getId(), cvDao.getName(), cvDao.getDesignation(), cvDao.getEmail(), cvDao.getBiography(), cvDao.getAvatar(), cvDao.getAwards(), cvDao.getPublications(), cvDao.getJobExperiences());
+        return new CvResponse(cvDao.getId(), cvDao.getName(), cvDao.getDesignation(), cvDao.getEmail(), cvDao.getBiography(), cvDao.getAvatar(), cvDao.getAwards(), cvDao.getPublications(), cvDao.getWorkExperiences());
     }
 
 }

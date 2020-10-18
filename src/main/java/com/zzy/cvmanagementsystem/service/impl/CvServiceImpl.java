@@ -7,6 +7,7 @@ import com.zzy.cvmanagementsystem.exception.NotFoundException;
 import com.zzy.cvmanagementsystem.repository.CvRepository;
 import com.zzy.cvmanagementsystem.service.CvService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class CvServiceImpl implements CvService {
     }
 
     @Override
+    @Transactional
     public void updateCv(String cvId, Map<String, Object> updates) {
         CvDao cvDao = cvRepository.findById(cvId).orElseThrow(() -> new NotFoundException("CV not found: " + cvId));
 
