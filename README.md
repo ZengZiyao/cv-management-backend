@@ -1,2 +1,2 @@
-# cv-management-system
-A CV Management System
+# cv-management-backend
+Backend code of a CV Management System
