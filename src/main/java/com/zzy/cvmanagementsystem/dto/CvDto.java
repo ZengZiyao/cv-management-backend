@@ -1,6 +1,6 @@
 package com.zzy.cvmanagementsystem.dto;
 
-import com.zzy.cvmanagementsystem.model.WorkExperience;
+import com.zzy.cvmanagementsystem.dao.WorkExperienceDao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +27,5 @@ public class CvDto {
 
     private List<String> publications;
 
-    private List<WorkExperience> workExperiences;
+    private List<WorkExperienceDao> workExperiences;
 }
