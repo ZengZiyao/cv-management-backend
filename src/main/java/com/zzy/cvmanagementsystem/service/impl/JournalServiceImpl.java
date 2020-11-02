@@ -1,6 +1,8 @@
 package com.zzy.cvmanagementsystem.service.impl;
 
 import com.zzy.cvmanagementsystem.dao.JournalDao;
+import com.zzy.cvmanagementsystem.dto.JournalDto;
+import com.zzy.cvmanagementsystem.exception.NotFoundException;
 import com.zzy.cvmanagementsystem.repository.JournalRepository;
 import com.zzy.cvmanagementsystem.service.JournalService;
 import org.springframework.stereotype.Service;
@@ -27,5 +29,19 @@ public class JournalServiceImpl implements JournalService {
     @Override
     public List<JournalDao> getAllJournals() {
         return journalRepository.findAll();
+    }
+
+    @Override
+    public void updateJournals(List<JournalDto> journalDtos) {
+        journalRepository.deleteAll();
+
+        for (JournalDto journalDto: journalDtos) {
+            JournalDao journalDao = new JournalDao();;
+            if (journalDto.getId() != null) {
+                 journalDao.setId(journalDto.getId());
+            }
+            journalDao.setName(journalDto.getName());
+            journalRepository.save(journalDao);
+        }
     }
 }

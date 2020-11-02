@@ -37,7 +37,7 @@ public class AwardServiceImpl implements AwardService {
     @Override
     public void addAward(AwardDto awardDto) {
         AwardDao awardDao = new AwardDao();
-        awardDao.setDate(awardDao.getDate());
+        awardDao.setDate(awardDto.getDate());
         awardDao.setContent(awardDto.getContent());
         awardRepository.save(awardDao);
     }

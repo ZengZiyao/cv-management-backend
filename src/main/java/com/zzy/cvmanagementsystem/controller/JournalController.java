@@ -1,6 +1,7 @@
 package com.zzy.cvmanagementsystem.controller;
 
 import com.zzy.cvmanagementsystem.dao.JournalDao;
+import com.zzy.cvmanagementsystem.dto.JournalDto;
 import com.zzy.cvmanagementsystem.service.JournalService;
 import com.zzy.cvmanagementsystem.service.impl.JournalServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,13 @@ public class JournalController {
     @PostMapping("")
     public ResponseEntity addJournal(@RequestBody String name) {
         journalService.addJournal(name);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("")
+    public ResponseEntity updateJournals(@RequestBody List<JournalDto> journalDtos) {
+        journalService.updateJournals(journalDtos);
 
         return ResponseEntity.noContent().build();
     }
