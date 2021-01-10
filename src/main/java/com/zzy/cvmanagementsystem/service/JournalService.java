@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface JournalService {
 
-    void addJournal(String name);
+    void addJournal(java.lang.String name);
 
     List<JournalDao> getAllJournals();
 

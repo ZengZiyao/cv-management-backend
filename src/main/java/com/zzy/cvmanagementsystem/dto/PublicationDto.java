@@ -1,6 +1,5 @@
 package com.zzy.cvmanagementsystem.dto;
 
-import com.zzy.cvmanagementsystem.dao.JournalDao;
 import com.zzy.cvmanagementsystem.model.Author;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class PublicationDto {
 
     private Date date;
 
-    private JournalDao journal;
+    private String journalId;
 
     private String tier;
 

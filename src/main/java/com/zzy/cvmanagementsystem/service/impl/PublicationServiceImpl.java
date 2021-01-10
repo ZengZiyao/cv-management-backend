@@ -23,7 +23,7 @@ public class PublicationServiceImpl implements PublicationService {
         PublicationDao publicationDao = new PublicationDao();
         publicationDao.setAuthors(publicationDto.getAuthors());
         publicationDao.setDate(publicationDto.getDate());
-        publicationDao.setJournal(publicationDto.getJournal());
+        publicationDao.setJournalId(publicationDto.getJournalId());
         publicationDao.setPage(publicationDto.getPage());
         publicationDao.setTier(publicationDto.getTier());
         publicationDao.setTitle(publicationDto.getTitle());
@@ -36,7 +36,7 @@ public class PublicationServiceImpl implements PublicationService {
         PublicationDao publicationDao = publicationRepository.findById(id).orElseThrow(() -> new NotFoundException("Publication not found"));
         publicationDao.setAuthors(publicationDto.getAuthors());
         publicationDao.setDate(publicationDto.getDate());
-        publicationDao.setJournal(publicationDto.getJournal());
+        publicationDao.setJournalId(publicationDto.getJournalId());
         publicationDao.setPage(publicationDto.getPage());
         publicationDao.setTier(publicationDto.getTier());
         publicationDao.setTitle(publicationDto.getTitle());
