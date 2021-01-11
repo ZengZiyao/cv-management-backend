@@ -36,14 +36,14 @@ public class AwardController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{awardId}")
+    @PutMapping("/{awardId}")
     public ResponseEntity updateAward(@PathVariable String awardId, @RequestBody AwardDto awardDto) {
         awardService.updateAwardById(awardId, awardDto);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{awardId}")
+    @DeleteMapping("/{awardId}")
     public ResponseEntity deleteAward(@PathVariable String awardId) {
         awardService.deleteAward(awardId);
 

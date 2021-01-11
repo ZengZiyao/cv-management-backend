@@ -5,7 +5,6 @@ import com.zzy.cvmanagementsystem.dto.AwardDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public interface AwardService {

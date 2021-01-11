@@ -34,7 +34,7 @@ public class WorkExperienceController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{wId}")
+    @PutMapping("/{wId}")
     public ResponseEntity updateWorkExperience(@PathVariable String wId, @RequestBody WorkExperienceDto workExperienceDto) {
         workExperienceService.updateWorkExperience(wId, workExperienceDto);
 
