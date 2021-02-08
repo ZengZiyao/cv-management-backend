@@ -1,6 +1,5 @@
 package com.zzy.cvmanagementsystem.service;
 
-import com.zzy.cvmanagementsystem.dao.PublicationDao;
 import com.zzy.cvmanagementsystem.dto.PublicationDto;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,6 @@ public interface PublicationService {
 
     void deletePublication(String id);
 
-    List<PublicationDao> getAllPublication();
+    List<PublicationDto> getAllPublication();
 
 }

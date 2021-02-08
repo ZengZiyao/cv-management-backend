@@ -20,7 +20,7 @@ public class BiographyServiceImpl implements BiographyService {
 
     @Override
     public BiographyDao getBiography() {
-        List<BiographyDao> biographyDaoList =  biographyRepository.findAll();
+        List<BiographyDao> biographyDaoList = biographyRepository.findAll();
 
         if (!biographyDaoList.isEmpty()) {
             return biographyDaoList.get(0);
@@ -33,9 +33,9 @@ public class BiographyServiceImpl implements BiographyService {
 
     @Override
     public void updateBiography(BiographyDto biographyDto) {
-      BiographyDao biographyDao =  biographyRepository.findAll().get(0);
-      biographyDao.setContent(biographyDto.getContent());
-      biographyRepository.save(biographyDao);
+        BiographyDao biographyDao = biographyRepository.findAll().get(0);
+        biographyDao.setContent(biographyDto.getContent());
+        biographyRepository.save(biographyDao);
     }
 
     @Override

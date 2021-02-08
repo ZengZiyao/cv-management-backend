@@ -5,9 +5,7 @@ import com.zzy.cvmanagementsystem.dto.ProjectDto;
 import com.zzy.cvmanagementsystem.service.ProjectService;
 import com.zzy.cvmanagementsystem.service.impl.ProjectServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -3,13 +3,16 @@ package com.zzy.cvmanagementsystem.service.impl;
 import com.zzy.cvmanagementsystem.dao.JournalDao;
 import com.zzy.cvmanagementsystem.dao.PublicationDao;
 import com.zzy.cvmanagementsystem.dto.JournalDto;
+import com.zzy.cvmanagementsystem.model.PubType;
 import com.zzy.cvmanagementsystem.repository.JournalRepository;
 import com.zzy.cvmanagementsystem.repository.PublicationRepository;
 import com.zzy.cvmanagementsystem.service.JournalService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JournalServiceImpl implements JournalService {
@@ -39,37 +42,28 @@ public class JournalServiceImpl implements JournalService {
     public void updateJournals(List<JournalDto> journalDtos) {
 
         List<JournalDao> journalDaoList = journalRepository.findAll();
-        List<String> idList = new ArrayList<>();
-        int i = 0;
-        while (i < journalDaoList.size()) {
-            int finalI = i;
-            JournalDto j = journalDtos.stream().filter(e -> e.getId().equals(journalDaoList.get(finalI).getId())).findAny().orElse(null);
-            if (j != null) {
-                journalDaoList.get(i).setName(j.getName());
-                i++;
-            } else {
-                idList.add(journalDaoList.get(i).getId());
-                journalRepository.delete(journalDaoList.get(i));
-                journalDaoList.remove(i);
+        Map<String, Boolean> deleteMap = new HashMap<>();
+        for (JournalDao journalDao : journalDaoList) {
+            JournalDto j = new JournalDto(journalDao.getId(), journalDao.getName());
+            if (!journalDtos.contains(j)) {
+                deleteMap.put(journalDao.getId(), true);
+            }
+        }
+        PublicationDao example = new PublicationDao();
+        example.setType(PubType.JOURNAL.ordinal());
+        List<PublicationDao> publicationDaoList = publicationRepository.findAll(Example.of(example));
+        publicationRepository.deleteAll(publicationDaoList);
+        for (PublicationDao publicationDao : publicationDaoList) {
+            if (deleteMap.get(publicationDao.getSourceId())) {
+                publicationDao.setSourceId(null);
             }
         }
 
-        List<PublicationDao> publicationDaoList = publicationRepository.findAll();
-        for (PublicationDao publicationDao: publicationDaoList) {
-            if (idList.contains(publicationDao.getJournalId())) {
-                publicationDao.setJournalId(null);
-            }
+        publicationRepository.saveAll(publicationDaoList);
+        journalRepository.deleteAll();
+        for (JournalDto journalDto : journalDtos) {
+            JournalDao j = new JournalDao(journalDto.getId(), journalDto.getName());
+            journalRepository.save(j);
         }
-
-
-        for (JournalDto journalDto: journalDtos) {
-            if (journalDto.getId() == null || journalDto.getId().equals("")) {
-                JournalDao j = new JournalDao();
-                j.setName(journalDto.getName());
-                journalDaoList.add(j);
-            }
-        }
-
-        journalRepository.saveAll(journalDaoList);
     }
 }

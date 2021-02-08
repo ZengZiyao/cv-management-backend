@@ -15,8 +15,8 @@ public class InfoDao {
 
     private String designation;
 
-    private  String name;
+    private String name;
 
-    private String email;
+    private String school;
 
 }

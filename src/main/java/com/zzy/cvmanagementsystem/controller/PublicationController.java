@@ -1,6 +1,5 @@
 package com.zzy.cvmanagementsystem.controller;
 
-import com.zzy.cvmanagementsystem.dao.PublicationDao;
 import com.zzy.cvmanagementsystem.dto.PublicationDto;
 import com.zzy.cvmanagementsystem.service.PublicationService;
 import com.zzy.cvmanagementsystem.service.impl.PublicationServiceImpl;
@@ -21,9 +20,9 @@ public class PublicationController {
 
     @GetMapping("")
     public ResponseEntity getAllPublications() {
-        List<PublicationDao> publicationDaoList = publicationService.getAllPublication();
+        List<PublicationDto> publicationDtoList = publicationService.getAllPublication();
 
-        return ResponseEntity.ok(publicationDaoList);
+        return ResponseEntity.ok(publicationDtoList);
     }
 
     @PostMapping("")

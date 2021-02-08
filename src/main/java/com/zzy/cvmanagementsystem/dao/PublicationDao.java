@@ -1,6 +1,7 @@
 package com.zzy.cvmanagementsystem.dao;
 
 import com.zzy.cvmanagementsystem.model.Author;
+import com.zzy.cvmanagementsystem.model.Country;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -24,7 +25,11 @@ public class PublicationDao {
 
     private Date date;
 
-    private String journalId;
+    private int type;
+
+    private String sourceId;
+
+    private Country Country;
 
     private String tier;
 }

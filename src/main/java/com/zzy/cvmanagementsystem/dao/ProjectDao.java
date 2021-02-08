@@ -14,8 +14,6 @@ public class ProjectDao {
 
     private String title;
 
-    private String description;
-
     private int startYear;
 
     private int endYear;
@@ -25,4 +23,6 @@ public class ProjectDao {
     private int fundingAmount;
 
     private String funder;
+
+    private boolean external;
 }

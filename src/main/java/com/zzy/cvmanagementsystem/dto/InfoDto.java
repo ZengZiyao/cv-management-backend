@@ -8,7 +8,7 @@ import lombok.Setter;
 public class InfoDto {
     private String name;
 
-    private String email;
+    private String school;
 
     private String designation;
 }

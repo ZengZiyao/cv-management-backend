@@ -1,11 +1,16 @@
 package com.zzy.cvmanagementsystem.dto;
 
+import com.zzy.cvmanagementsystem.model.PubSource;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class JournalDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class JournalDto extends PubSource {
 
     private String id;
 

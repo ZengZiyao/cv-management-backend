@@ -17,6 +17,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
+
     @Override
     public List<ProjectDao> getAllProject() {
         return projectRepository.findAll();
@@ -25,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void updateProjectById(String id, ProjectDto projectDto) {
         ProjectDao projectDao = projectRepository.findById(id).orElseThrow(() -> new NotFoundException("Project Not Found"));
-        projectDao.setDescription(projectDto.getDescription());
+        projectDao.setExternal(projectDto.isExternal());
         projectDao.setEndYear(projectDto.getEndYear());
         projectDao.setFunder(projectDto.getFunder());
         projectDao.setFundingAmount(projectDto.getFundingAmount());
@@ -38,7 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void addProject(ProjectDto projectDto) {
         ProjectDao projectDao = new ProjectDao();
-        projectDao.setDescription(projectDto.getDescription());
+        projectDao.setExternal(projectDto.isExternal());
         projectDao.setEndYear(projectDto.getEndYear());
         projectDao.setFunder(projectDto.getFunder());
         projectDao.setFundingAmount(projectDto.getFundingAmount());

@@ -9,8 +9,6 @@ public class ProjectDto {
 
     private String title;
 
-    private String description;
-
     private int startYear;
 
     private int endYear;
@@ -20,5 +18,7 @@ public class ProjectDto {
     private int fundingAmount;
 
     private String funder;
+
+    private boolean external;
 
 }

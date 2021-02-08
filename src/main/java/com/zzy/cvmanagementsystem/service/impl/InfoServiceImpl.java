@@ -25,7 +25,7 @@ public class InfoServiceImpl implements InfoService {
         infoRepository.deleteAll();
         InfoDao infoDao = new InfoDao();
         infoDao.setDesignation(infoDto.getDesignation());
-        infoDao.setEmail(infoDto.getEmail());
+        infoDao.setSchool(infoDto.getSchool());
         infoDao.setName(infoDto.getName());
 
         infoRepository.save(infoDao);
@@ -37,7 +37,7 @@ public class InfoServiceImpl implements InfoService {
         InfoDao infoDao = infoRepository.findAll().get(0);
 
         infoDao.setName(infoDto.getName());
-        infoDao.setEmail(infoDto.getEmail());
+        infoDao.setSchool(infoDto.getSchool());
         infoDao.setDesignation(infoDto.getDesignation());
 
         infoRepository.save(infoDao);

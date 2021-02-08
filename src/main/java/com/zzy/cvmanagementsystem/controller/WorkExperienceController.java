@@ -4,7 +4,6 @@ import com.zzy.cvmanagementsystem.dao.WorkExperienceDao;
 import com.zzy.cvmanagementsystem.dto.WorkExperienceDto;
 import com.zzy.cvmanagementsystem.service.WorkExperienceService;
 import com.zzy.cvmanagementsystem.service.impl.WorkExperienceServiceImpl;
-import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

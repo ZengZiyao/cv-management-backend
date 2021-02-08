@@ -27,7 +27,7 @@ public class JournalController {
     }
 
     @PostMapping("")
-    public ResponseEntity addJournal(@RequestBody java.lang.String name) {
+    public ResponseEntity addJournal(@RequestBody String name) {
         journalService.addJournal(name);
 
         return ResponseEntity.noContent().build();
