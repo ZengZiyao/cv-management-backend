@@ -17,4 +17,6 @@ public class AwardDao {
     private String content;
 
     private Date date;
+
+    private String userId;
 }

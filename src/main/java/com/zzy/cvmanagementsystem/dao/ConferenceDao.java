@@ -20,4 +20,6 @@ public class ConferenceDao extends PubSource {
 
     @Field("conferenceName")
     private String name;
+
+    private String userId;
 }

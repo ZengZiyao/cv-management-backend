@@ -1,13 +1,15 @@
 package com.zzy.cvmanagementsystem.controller;
 
-import com.zzy.cvmanagementsystem.dao.StudentDao;
 import com.zzy.cvmanagementsystem.dto.StudentDto;
 import com.zzy.cvmanagementsystem.service.StudentService;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.impl.StudentServiceImpl;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -16,35 +18,49 @@ import java.util.List;
 @Slf4j
 public class StudentController {
     private StudentService studentService;
+    private UserService userService;
 
-    StudentController(StudentServiceImpl studentService) {
+    StudentController(StudentServiceImpl studentService, UserServiceImpl userService) {
         this.studentService = studentService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllStudents() {
-        List<StudentDao> studentDaos = studentService.getAllStudents();
+    public ResponseEntity getAllStudents(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(studentDaos);
+        List<StudentDto> studentDtos = studentService.getAllStudents(userid);
+
+        return ResponseEntity.ok(studentDtos);
     }
 
     @GetMapping("/masters")
-    public ResponseEntity getAllMasterStudents() {
-        List<StudentDao> studentDaos = studentService.getAllMasterStudents();
+    public ResponseEntity getAllMasterStudents(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(studentDaos);
+        List<StudentDto> studentDtos = studentService.getAllMasterStudents(userid);
+
+        return ResponseEntity.ok(studentDtos);
     }
 
     @GetMapping("/phds")
-    public ResponseEntity getAllPhdStudents() {
-        List<StudentDao> studentDaos = studentService.getAllPhdStudents();
+    public ResponseEntity getAllPhdStudents(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(studentDaos);
+        List<StudentDto> studentDtos = studentService.getAllPhdStudents(userid);
+
+        return ResponseEntity.ok(studentDtos);
     }
 
     @PostMapping("")
-    public ResponseEntity addStudent(@RequestBody StudentDto studentDto) {
-        studentService.addStudent(studentDto);
+    public ResponseEntity addStudent(@RequestBody StudentDto studentDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        studentService.addStudent(studentDto, userid);
 
         return ResponseEntity.noContent().build();
     }

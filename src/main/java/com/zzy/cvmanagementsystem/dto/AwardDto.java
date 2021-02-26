@@ -8,6 +8,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class AwardDto {
+    private String id;
+
     private String content;
 
     private Date date;

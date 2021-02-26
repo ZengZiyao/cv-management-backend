@@ -25,4 +25,6 @@ public class ProjectDao {
     private String funder;
 
     private boolean external;
+
+    private String userId;
 }

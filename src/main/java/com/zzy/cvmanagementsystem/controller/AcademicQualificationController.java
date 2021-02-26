@@ -1,13 +1,15 @@
 package com.zzy.cvmanagementsystem.controller;
 
-import com.zzy.cvmanagementsystem.dao.AcademicQualificationDao;
 import com.zzy.cvmanagementsystem.dto.AcademicQualificationDto;
 import com.zzy.cvmanagementsystem.service.AcademicQualificationService;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.impl.AcademicQualificationServiceImpl;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -16,21 +18,28 @@ import java.util.List;
 @Slf4j
 public class AcademicQualificationController {
     private AcademicQualificationService academicQualificationService;
+    private UserService userService;
 
-    AcademicQualificationController(AcademicQualificationServiceImpl academicQualificationService) {
+    AcademicQualificationController(AcademicQualificationServiceImpl academicQualificationService, UserServiceImpl userService) {
         this.academicQualificationService = academicQualificationService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllAcademicQualifications() {
-        List<AcademicQualificationDao> academicQualificationDaos = academicQualificationService.getAllAcademicQualifications();
+    public ResponseEntity getAllAcademicQualifications(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(academicQualificationDaos);
+        List<AcademicQualificationDto> academicQualificationDtos = academicQualificationService.getAllAcademicQualifications(userid);
+
+        return ResponseEntity.ok(academicQualificationDtos);
     }
 
     @PostMapping("")
-    public ResponseEntity addAcademicQualification(@RequestBody AcademicQualificationDto academicQualificationDto) {
-        academicQualificationService.addAcademicQualification(academicQualificationDto);
+    public ResponseEntity addAcademicQualification(@RequestBody AcademicQualificationDto academicQualificationDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+        academicQualificationService.addAcademicQualification(academicQualificationDto, userid);
 
         return ResponseEntity.noContent().build();
     }

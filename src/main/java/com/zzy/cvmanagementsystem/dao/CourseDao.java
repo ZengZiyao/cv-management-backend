@@ -28,4 +28,6 @@ public class CourseDao {
     private String courseType;
 
     private int semester;
+
+    private String userId;
 }

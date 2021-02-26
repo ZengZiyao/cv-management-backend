@@ -30,7 +30,7 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public void addPublication(PublicationDto publicationDto) {
+    public void addPublication(PublicationDto publicationDto, String userid) {
         PublicationDao publicationDao = new PublicationDao();
         publicationDao.setAuthors(publicationDto.getAuthors());
         publicationDao.setDate(publicationDto.getDate());
@@ -40,7 +40,7 @@ public class PublicationServiceImpl implements PublicationService {
         publicationDao.setPage(publicationDto.getPage());
         publicationDao.setTier(publicationDto.getTier());
         publicationDao.setTitle(publicationDto.getTitle());
-
+        publicationDao.setUserId(userid);
         publicationRepository.save(publicationDao);
     }
 
@@ -77,8 +77,8 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public List<PublicationDto> getAllPublication() {
-        List<PublicationDao> publicationDaoList = publicationRepository.findAll();
+    public List<PublicationDto> getAllPublication(String userid) {
+        List<PublicationDao> publicationDaoList = publicationRepository.findAllByUserId(userid);
         List<PublicationDto> publicationDtoList = new ArrayList<>();
         publicationDaoList.forEach((p) -> {
             PublicationDto publicationDto = new PublicationDto();
@@ -101,5 +101,10 @@ public class PublicationServiceImpl implements PublicationService {
             publicationDtoList.add(publicationDto);
         });
         return publicationDtoList;
+    }
+
+    @Override
+    public void deleteByUserId(String userid) {
+        publicationRepository.deleteAll(publicationRepository.findAllByUserId(userid));
     }
 }

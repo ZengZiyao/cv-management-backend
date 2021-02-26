@@ -6,6 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WorkExperienceDto {
+
+    private String id;
+
     private String title;
 
     private String startTime;

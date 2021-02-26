@@ -17,7 +17,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class JournalDao extends PubSource {
     @Id
     private String id;
+
     @Field("journalName")
     private String name;
 
+    private String userId;
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InfoRepository extends MongoRepository<InfoDao, String> {
+    InfoDao findByUserId(String userid);
+
 }

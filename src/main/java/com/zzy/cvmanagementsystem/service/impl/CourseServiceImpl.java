@@ -23,9 +23,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDto> getAllCourses() {
+    public List<CourseDto> getAllCourses(String userid) {
         List<CourseDto> courseDtoList = new ArrayList<>();
-        List<CourseDao> courseDaoList = courseRepository.findAll();
+        List<CourseDao> courseDaoList = courseRepository.findAllByUserId(userid);
         for (CourseDao courseDao : courseDaoList) {
             if (courseDao.getEndYear() != null) {
                 LocalDateTime dateTime = LocalDateTime.now().minusYears(2);
@@ -58,7 +58,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void addCourse(CourseDto courseDto) {
+    public void addCourse(CourseDto courseDto, String userid) {
         CourseDao courseDao = new CourseDao();
         courseDao.setCourseCode(courseDto.getCourseCode());
         courseDao.setTitle(courseDto.getTitle());
@@ -67,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
         courseDao.setEndYear(courseDto.getEndYear());
         courseDao.setCourseLevel(courseDto.getCourseLevel());
         courseDao.setCourseType(courseDto.getCourseType());
-
+        courseDao.setUserId(userid);
         courseRepository.save(courseDao);
 
     }
@@ -75,5 +75,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void deleteCourse(String id) {
         courseRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUserId(String userid) {
+        courseRepository.deleteAll(courseRepository.findAllByUserId(userid));
     }
 }

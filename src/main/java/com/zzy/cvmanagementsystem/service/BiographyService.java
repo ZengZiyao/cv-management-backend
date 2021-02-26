@@ -1,18 +1,17 @@
 package com.zzy.cvmanagementsystem.service;
 
-import com.zzy.cvmanagementsystem.dao.BiographyDao;
 import com.zzy.cvmanagementsystem.dto.BiographyDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface BiographyService {
 
-    BiographyDao getBiography();
+    BiographyDto getBiography(String userid);
 
-    void updateBiography(BiographyDto biographyDto);
+    void updateBiography(String id, BiographyDto biographyDto);
 
-    void addBiography(BiographyDto biographyDto);
+    void addBiography(BiographyDto biographyDto, String userid);
 
-    void deleteBiography();
+    void deleteBiography(String id);
 
 }

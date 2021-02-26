@@ -1,17 +1,18 @@
 package com.zzy.cvmanagementsystem.service;
 
-import com.zzy.cvmanagementsystem.dao.InfoDao;
 import com.zzy.cvmanagementsystem.dto.InfoDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface InfoService {
-    void addInfo(InfoDto infoDto);
+    void addInfo(InfoDto infoDto, String userid);
 
-    void updateInfo(InfoDto infoDto);
+    void updateInfo(String id, InfoDto infoDto);
 
-    InfoDao getInfo();
+    InfoDto getInfo(String userid);
 
-    void deleteInfo();
+    void deleteInfo(String id);
+
+    void deleteByUserId(String userid);
 
 }

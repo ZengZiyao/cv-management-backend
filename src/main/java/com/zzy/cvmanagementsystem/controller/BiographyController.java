@@ -2,9 +2,13 @@ package com.zzy.cvmanagementsystem.controller;
 
 import com.zzy.cvmanagementsystem.dto.BiographyDto;
 import com.zzy.cvmanagementsystem.service.BiographyService;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.impl.BiographyServiceImpl;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/cv/biography")
@@ -12,33 +16,41 @@ import org.springframework.web.bind.annotation.*;
 public class BiographyController {
 
     private BiographyService biographyService;
+    private UserService userService;
 
-    BiographyController(BiographyServiceImpl biographyService) {
+    BiographyController(BiographyServiceImpl biographyService, UserServiceImpl userService) {
         this.biographyService = biographyService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getBiography() {
-        return ResponseEntity.ok(biographyService.getBiography());
+    public ResponseEntity getBiography(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        return ResponseEntity.ok(biographyService.getBiography(userid));
     }
 
     @PostMapping("")
-    public ResponseEntity addBiography(@RequestBody BiographyDto biographyDto) {
-        biographyService.addBiography(biographyDto);
+    public ResponseEntity addBiography(@RequestBody BiographyDto biographyDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+        biographyService.addBiography(biographyDto, userid);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("")
-    public ResponseEntity updateBiography(@RequestBody BiographyDto biographyDto) {
-        biographyService.updateBiography(biographyDto);
+    @PutMapping("/{id}")
+    public ResponseEntity updateBiography(@PathVariable String id, @RequestBody BiographyDto biographyDto) {
+        biographyService.updateBiography(id, biographyDto);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("")
-    public ResponseEntity deleteBiography() {
-        biographyService.deleteBiography();
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteBiography(@PathVariable String id) {
+
+        biographyService.deleteBiography(id);
 
         return ResponseEntity.noContent().build();
     }

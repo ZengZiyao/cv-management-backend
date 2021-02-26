@@ -32,4 +32,6 @@ public class PublicationDao {
     private Country Country;
 
     private String tier;
+
+    private String userId;
 }

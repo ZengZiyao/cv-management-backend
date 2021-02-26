@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BiographyRepository extends MongoRepository<BiographyDao, String> {
+    BiographyDao findByUserId(String userid);
+
 }

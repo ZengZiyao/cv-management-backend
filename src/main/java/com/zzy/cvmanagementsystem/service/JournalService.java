@@ -1,6 +1,5 @@
 package com.zzy.cvmanagementsystem.service;
 
-import com.zzy.cvmanagementsystem.dao.JournalDao;
 import com.zzy.cvmanagementsystem.dto.JournalDto;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +8,9 @@ import java.util.List;
 @Service
 public interface JournalService {
 
-    void addJournal(java.lang.String name);
+    void addJournal(String name, String userid);
 
-    List<JournalDao> getAllJournals();
+    List<JournalDto> getAllJournals(String userid);
 
-    void updateJournals(List<JournalDto> journalDtos);
+    void updateJournals(String userid, List<JournalDto> journalDtos);
 }

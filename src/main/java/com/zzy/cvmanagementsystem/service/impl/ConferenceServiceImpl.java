@@ -10,6 +10,7 @@ import com.zzy.cvmanagementsystem.service.ConferenceService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,44 +26,70 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void addConference(String name) {
+    public void addConference(String name, String userid) {
         ConferenceDao conferenceDao = new ConferenceDao();
         conferenceDao.setName(name);
+        conferenceDao.setUserId(userid);
         conferenceRepository.save(conferenceDao);
     }
 
     @Override
-    public List<ConferenceDao> getAllConferences() {
-        return conferenceRepository.findAll();
+    public List<ConferenceDto> getAllConferences(String userid) {
+        List<ConferenceDto> conferenceDtos = new ArrayList<>();
+        List<ConferenceDao> conferenceDaos = conferenceRepository.findByUserId(userid);
+        for (ConferenceDao conferenceDao : conferenceDaos) {
+            ConferenceDto conferenceDto = new ConferenceDto();
+            conferenceDto.setId(conferenceDao.getId());
+            conferenceDto.setName(conferenceDao.getName());
+            conferenceDto.setId(conferenceDao.getId());
+            conferenceDtos.add(conferenceDto);
+        }
+        return conferenceDtos;
     }
 
     @Override
-    public void updateConferences(List<ConferenceDto> conferenceDtos) {
-
-        List<ConferenceDao> conferenceDaoList = conferenceRepository.findAll();
-        Map<String, Boolean> deleteMap = new HashMap<>();
-        for (ConferenceDao conferenceDao : conferenceDaoList) {
-            ConferenceDto c = new ConferenceDto(conferenceDao.getId(), conferenceDao.getName());
-            if (!conferenceDtos.contains(c)) {
-                deleteMap.put(conferenceDao.getId(), true);
-            }
+    public void updateConferences(String userid, List<ConferenceDto> conferenceDtos) {
+        List<ConferenceDao> oldConferenceDaoList = conferenceRepository.findByUserId(userid);
+        Map<String, ConferenceDao> oldConferenceMap = new HashMap<>();
+        for (ConferenceDao conferenceDao : oldConferenceDaoList) {
+            oldConferenceMap.put(conferenceDao.getId(), conferenceDao);
         }
+
+        Map<String, Boolean> newConferenceIdMap = new HashMap<>();
+        List<ConferenceDao> newConferenceDaoList = new ArrayList<>();
+        for (ConferenceDto conferenceDto : conferenceDtos) {
+            ConferenceDao c = new ConferenceDao();
+            if (conferenceDto.getId() != null) {
+                newConferenceIdMap.put(conferenceDto.getId(), true);
+
+                if (oldConferenceMap.containsKey(conferenceDto.getId())) {
+                    c.setId(conferenceDto.getId());
+                } else {
+                    continue;
+                }
+
+            }
+
+            c.setUserId(userid);
+            c.setName(conferenceDto.getName());
+            newConferenceDaoList.add(c);
+        }
+
+        conferenceRepository.deleteAll(oldConferenceDaoList);
+        conferenceRepository.saveAll(newConferenceDaoList);
+
         PublicationDao example = new PublicationDao();
         example.setType(PubType.CONFERENCE.ordinal());
+        example.setUserId(userid);
         List<PublicationDao> publicationDaoList = publicationRepository.findAll(Example.of(example));
         publicationRepository.deleteAll(publicationDaoList);
         for (PublicationDao publicationDao : publicationDaoList) {
-            if (deleteMap.get(publicationDao.getSourceId())) {
+            if (!newConferenceIdMap.containsKey(publicationDao.getSourceId())) {
                 publicationDao.setSourceId(null);
             }
         }
-
         publicationRepository.saveAll(publicationDaoList);
-        conferenceRepository.deleteAll();
-        for (ConferenceDto conferenceDto : conferenceDtos) {
-            ConferenceDao c = new ConferenceDao(conferenceDto.getId(), conferenceDto.getName());
-            conferenceRepository.save(c);
-        }
+
     }
 
 }

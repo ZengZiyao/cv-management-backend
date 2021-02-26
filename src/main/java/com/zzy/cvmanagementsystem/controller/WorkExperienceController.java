@@ -1,12 +1,14 @@
 package com.zzy.cvmanagementsystem.controller;
 
-import com.zzy.cvmanagementsystem.dao.WorkExperienceDao;
 import com.zzy.cvmanagementsystem.dto.WorkExperienceDto;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.WorkExperienceService;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import com.zzy.cvmanagementsystem.service.impl.WorkExperienceServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -14,21 +16,29 @@ import java.util.List;
 @CrossOrigin
 public class WorkExperienceController {
     private WorkExperienceService workExperienceService;
+    private UserService userService;
 
-    WorkExperienceController(WorkExperienceServiceImpl workExperienceService) {
+    WorkExperienceController(WorkExperienceServiceImpl workExperienceService, UserServiceImpl userService) {
         this.workExperienceService = workExperienceService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllWorkExperiences() {
-        List<WorkExperienceDao> workExperienceDaos = workExperienceService.getAllWorkExperiences();
+    public ResponseEntity getAllWorkExperiences(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(workExperienceDaos);
+        List<WorkExperienceDto> workExperienceDtos = workExperienceService.getAllWorkExperiences(userid);
+
+        return ResponseEntity.ok(workExperienceDtos);
     }
 
     @PostMapping("")
-    public ResponseEntity addWorkExperience(@RequestBody WorkExperienceDto workExperienceDto) {
-        workExperienceService.addWorkExperience(workExperienceDto);
+    public ResponseEntity addWorkExperience(@RequestBody WorkExperienceDto workExperienceDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        workExperienceService.addWorkExperience(workExperienceDto, userid);
 
         return ResponseEntity.noContent().build();
     }

@@ -7,8 +7,6 @@ import com.zzy.cvmanagementsystem.repository.BiographyRepository;
 import com.zzy.cvmanagementsystem.service.BiographyService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class BiographyServiceImpl implements BiographyService {
 
@@ -19,37 +17,34 @@ public class BiographyServiceImpl implements BiographyService {
     }
 
     @Override
-    public BiographyDao getBiography() {
-        List<BiographyDao> biographyDaoList = biographyRepository.findAll();
+    public BiographyDto getBiography(String userid) {
+        BiographyDao biographyDao = biographyRepository.findByUserId(userid);
 
-        if (!biographyDaoList.isEmpty()) {
-            return biographyDaoList.get(0);
+        BiographyDto biographyDto = new BiographyDto();
+        biographyDto.setContent(biographyDao.getContent());
+        biographyDto.setId(biographyDao.getId());
+        return biographyDto;
 
-        }
-
-        throw new NotFoundException("Biography not found");
 
     }
 
     @Override
-    public void updateBiography(BiographyDto biographyDto) {
-        BiographyDao biographyDao = biographyRepository.findAll().get(0);
+    public void updateBiography(String id, BiographyDto biographyDto) {
+        BiographyDao biographyDao = biographyRepository.findById(id).orElseThrow(() -> new NotFoundException("Biography not found"));
         biographyDao.setContent(biographyDto.getContent());
         biographyRepository.save(biographyDao);
     }
 
     @Override
-    public void addBiography(BiographyDto biographyDto) {
-        biographyRepository.deleteAll();
+    public void addBiography(BiographyDto biographyDto, String userid) {
         BiographyDao biographyDao = new BiographyDao();
         biographyDao.setContent(biographyDto.getContent());
-
-        biographyRepository.deleteAll();
+        biographyDao.setUserId(userid);
         biographyRepository.save(biographyDao);
     }
 
     @Override
-    public void deleteBiography() {
-        biographyRepository.deleteAll();
+    public void deleteBiography(String id) {
+        biographyRepository.deleteById(id);
     }
 }

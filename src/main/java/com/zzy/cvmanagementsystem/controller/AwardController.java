@@ -1,13 +1,15 @@
 package com.zzy.cvmanagementsystem.controller;
 
-import com.zzy.cvmanagementsystem.dao.AwardDao;
 import com.zzy.cvmanagementsystem.dto.AwardDto;
 import com.zzy.cvmanagementsystem.service.AwardService;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.impl.AwardServiceImpl;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -17,21 +19,29 @@ import java.util.List;
 public class AwardController {
 
     private AwardService awardService;
+    private UserService userService;
 
-    AwardController(AwardServiceImpl awardService) {
+    AwardController(AwardServiceImpl awardService, UserServiceImpl userService) {
         this.awardService = awardService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllAwards() {
-        List<AwardDao> awardDaos = awardService.getAllAwards();
+    public ResponseEntity getAllAwards(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
 
-        return ResponseEntity.ok(awardDaos);
+        List<AwardDto> awardDtos = awardService.getAllAwards(userid);
+
+        return ResponseEntity.ok(awardDtos);
     }
 
     @PostMapping("")
-    public ResponseEntity addAward(@RequestBody AwardDto awardDto) {
-        awardService.addAward(awardDto);
+    public ResponseEntity addAward(@RequestBody AwardDto awardDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        awardService.addAward(awardDto, userid);
 
         return ResponseEntity.noContent().build();
     }

@@ -30,4 +30,6 @@ public class MembershipDao {
     private Country country;
 
     private String state;
+
+    private String userId;
 }

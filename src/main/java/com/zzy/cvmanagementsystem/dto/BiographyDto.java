@@ -6,5 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BiographyDto {
+    private String id;
+
     private String content;
 }

@@ -7,6 +7,7 @@ import com.zzy.cvmanagementsystem.repository.MembershipRepository;
 import com.zzy.cvmanagementsystem.service.MembershipService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,12 +19,19 @@ public class MembershipServiceImpl implements MembershipService {
     }
 
     @Override
-    public List<MembershipDao> getAllMemberships() {
-        return membershipRepository.findAll();
+    public List<MembershipDto> getAllMemberships(String userid) {
+        List<MembershipDto> membershipDtoList = new ArrayList<>();
+        List<MembershipDao> membershipDaoList = membershipRepository.findAllByUserId(userid);
+        for (MembershipDao membershipDao : membershipDaoList) {
+            MembershipDto membershipDto = new MembershipDto(membershipDao.getId(), membershipDao.getStartTime(), membershipDao.getEndTime(), membershipDao.getDesignation(), membershipDao.getInstitution(), membershipDao.getCountry(), membershipDao.getState());
+            membershipDtoList.add(membershipDto);
+        }
+
+        return membershipDtoList;
     }
 
     @Override
-    public void AddMembership(MembershipDto membershipDto) {
+    public void AddMembership(MembershipDto membershipDto, String userid) {
         MembershipDao membershipDao = new MembershipDao();
         membershipDao.setCountry(membershipDto.getCountry());
         membershipDao.setDesignation(membershipDto.getDesignation());
@@ -31,6 +39,7 @@ public class MembershipServiceImpl implements MembershipService {
         membershipDao.setInstitution(membershipDto.getInstitution());
         membershipDao.setStartTime(membershipDto.getStartTime());
         membershipDao.setState(membershipDto.getState());
+        membershipDao.setUserId(userid);
         membershipRepository.save(membershipDao);
     }
 
@@ -49,5 +58,10 @@ public class MembershipServiceImpl implements MembershipService {
     @Override
     public void deleteMembership(String id) {
         membershipRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUserId(String userid) {
+        membershipRepository.deleteAll(membershipRepository.findAllByUserId(userid));
     }
 }

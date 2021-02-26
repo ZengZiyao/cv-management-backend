@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+@Document
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
 public class StudentDao {
     @Id
     private String id;
@@ -31,4 +31,6 @@ public class StudentDao {
     private String title;
 
     private String status;
+
+    private String userId;
 }

@@ -21,4 +21,6 @@ public class AcademicQualificationDao {
     private String major;
 
     private String university;
+
+    private String userId;
 }

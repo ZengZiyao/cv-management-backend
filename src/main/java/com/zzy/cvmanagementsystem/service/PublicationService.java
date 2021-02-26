@@ -8,12 +8,14 @@ import java.util.List;
 @Service
 public interface PublicationService {
 
-    void addPublication(PublicationDto publicationDto);
+    void addPublication(PublicationDto publicationDto, String userid);
 
     void updatePublication(String id, PublicationDto publicationDto);
 
     void deletePublication(String id);
 
-    List<PublicationDto> getAllPublication();
+    List<PublicationDto> getAllPublication(String userid);
+
+    void deleteByUserId(String userid);
 
 }

@@ -2,11 +2,14 @@ package com.zzy.cvmanagementsystem.controller;
 
 import com.zzy.cvmanagementsystem.dto.CourseDto;
 import com.zzy.cvmanagementsystem.service.CourseService;
+import com.zzy.cvmanagementsystem.service.UserService;
 import com.zzy.cvmanagementsystem.service.impl.CourseServiceImpl;
+import com.zzy.cvmanagementsystem.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -15,21 +18,29 @@ import java.util.List;
 @Slf4j
 public class CourseController {
     private CourseService courseService;
+    private UserService userService;
 
-    CourseController(CourseServiceImpl courseService) {
+    CourseController(CourseServiceImpl courseService, UserServiceImpl userService) {
         this.courseService = courseService;
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public ResponseEntity getAllCourses() {
-        List<CourseDto> courseDtos = courseService.getAllCourses();
+    public ResponseEntity getAllCourses(HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        List<CourseDto> courseDtos = courseService.getAllCourses(userid);
 
         return ResponseEntity.ok(courseDtos);
     }
 
     @PostMapping("")
-    public ResponseEntity addCourse(@RequestBody CourseDto courseDto) {
-        courseService.addCourse(courseDto);
+    public ResponseEntity addCourse(@RequestBody CourseDto courseDto, HttpServletRequest httpServletRequest) {
+        String username = httpServletRequest.getUserPrincipal().getName();
+        String userid = userService.getUser(username).getId();
+
+        courseService.addCourse(courseDto, userid);
 
         return ResponseEntity.noContent().build();
     }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +22,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDao> getAllStudents() {
-        List<StudentDao> studentDaoList = studentRepository.findAll();
+    public List<StudentDto> getAllStudents(String userid) {
+        List<StudentDao> studentDaoList = studentRepository.findAllByUserId(userid);
         for (StudentDao studentDao : studentDaoList) {
             if (studentDao.getEndYear() != null) {
                 LocalDateTime dateTime = LocalDateTime.now().minusYears(2);
@@ -35,21 +36,45 @@ public class StudentServiceImpl implements StudentService {
                 }
             }
         }
-        return studentRepository.findAll();
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        studentDaoList = studentRepository.findAll();
+        for (StudentDao studentDao : studentDaoList) {
+            StudentDto studentDto = new StudentDto(studentDao.getId(), studentDao.getName(), studentDao.getType(), studentDao.getStartYear(), studentDao.getEndYear(), studentDao.getRole(), studentDao.getTitle(), studentDao.getStatus());
+            studentDtoList.add(studentDto);
+        }
+
+        return studentDtoList;
     }
 
     @Override
-    public List<StudentDao> getAllMasterStudents() {
-        StudentDao studentDao = new StudentDao();
-        studentDao.setType("master");
-        return studentRepository.findAll(Example.of(studentDao));
+    public List<StudentDto> getAllMasterStudents(String userid) {
+        StudentDao example = new StudentDao();
+        example.setType("master");
+        example.setUserId(userid);
+        List<StudentDao> studentDaoList = studentRepository.findAll(Example.of(example));
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for (StudentDao studentDao : studentDaoList) {
+            StudentDto studentDto = new StudentDto(studentDao.getId(), studentDao.getName(), studentDao.getType(), studentDao.getStartYear(), studentDao.getEndYear(), studentDao.getRole(), studentDao.getTitle(), studentDao.getStatus());
+            studentDtoList.add(studentDto);
+        }
+
+        return studentDtoList;
+
     }
 
     @Override
-    public List<StudentDao> getAllPhdStudents() {
-        StudentDao studentDao = new StudentDao();
-        studentDao.setType("phd");
-        return studentRepository.findAll(Example.of(studentDao));
+    public List<StudentDto> getAllPhdStudents(String userid) {
+        StudentDao example = new StudentDao();
+        example.setType("phd");
+        example.setUserId(userid);
+        List<StudentDao> studentDaoList = studentRepository.findAll(Example.of(example));
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for (StudentDao studentDao : studentDaoList) {
+            StudentDto studentDto = new StudentDto(studentDao.getId(), studentDao.getName(), studentDao.getType(), studentDao.getStartYear(), studentDao.getEndYear(), studentDao.getRole(), studentDao.getTitle(), studentDao.getStatus());
+            studentDtoList.add(studentDto);
+        }
+
+        return studentDtoList;
     }
 
     @Override
@@ -65,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void addStudent(StudentDto studentDto) {
+    public void addStudent(StudentDto studentDto, String userid) {
         StudentDao studentDao = new StudentDao();
         studentDao.setEndYear(studentDto.getEndYear());
         studentDao.setStartYear(studentDto.getStartYear());
@@ -74,11 +99,17 @@ public class StudentServiceImpl implements StudentService {
         studentDao.setRole(studentDto.getRole());
         studentDao.setType(studentDto.getType());
         studentDao.setName(studentDto.getName());
+        studentDao.setUserId(userid);
         studentRepository.save(studentDao);
     }
 
     @Override
     public void deleteStudentById(String id) {
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUserId(String userid) {
+        studentRepository.deleteAll(studentRepository.findAllByUserId(userid));
     }
 }

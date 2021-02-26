@@ -19,4 +19,5 @@ public class InfoDao {
 
     private String school;
 
+    private String userId;
 }
