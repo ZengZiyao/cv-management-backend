@@ -18,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -45,7 +48,6 @@ public class UserServiceImpl implements UserService {
             userDao.setUsername(userDto.getUsername());
             userDao.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userDao.setEmail(userDto.getEmail());
-            userDao.setShortname(userDto.getShortname());
             userDao = userRepository.save(userDao);
 
             statusService.createStatus(userDao.getId());
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
             userDto.setEmail(userDao.getEmail());
             userDto.setPassword(userDao.getPassword());
             userDto.setShortname(userDao.getShortname());
+            userDto.setGsAuthorId(userDao.getGsAuthorId());
             return userDto;
         }
 
@@ -93,6 +96,7 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = userRepository.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("user not found"));
         userDao.setEmail(userDto.getEmail());
         userDao.setShortname(userDto.getShortname());
+        userDao.setGsAuthorId(userDto.getGsAuthorId());
         userRepository.save(userDao);
     }
 
@@ -101,5 +105,21 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = userRepository.findById(userid).orElseThrow(() -> new NotFoundException("user not found"));
         userDao.setPassword(passwordEncoder.encode(password));
         userRepository.save(userDao);
+    }
+
+    @Override
+    public List<UserDto> getAllUsersWithGS() {
+        List<UserDao> userDaoList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (UserDao userDao :
+                userDaoList) {
+         if (userDao.getGsAuthorId() != null && !userDao.getGsAuthorId().isEmpty()) {
+             UserDto userDto = new UserDto();
+             userDto.setId(userDao.getId());
+             userDto.setGsAuthorId(userDao.getGsAuthorId());
+             userDtoList.add(userDto);
+         }
+        }
+        return userDtoList;
     }
 }

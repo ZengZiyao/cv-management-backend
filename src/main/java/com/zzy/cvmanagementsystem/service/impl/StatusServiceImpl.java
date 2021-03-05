@@ -19,6 +19,7 @@ public class StatusServiceImpl implements StatusService {
     private PublicationService publicationService;
     private StudentService studentService;
     private WorkExperienceService workExperienceService;
+    private CitationService citationService;
 
     StatusServiceImpl(StatusRepository statusRepository,
                       AcademicQualificationServiceImpl academicQualificationService,
@@ -29,7 +30,8 @@ public class StatusServiceImpl implements StatusService {
                       ProjectServiceImpl projectService,
                       PublicationServiceImpl publicationService,
                       StudentServiceImpl studentService,
-                      WorkExperienceServiceImpl workExperienceService) {
+                      WorkExperienceServiceImpl workExperienceService,
+                      CitationServiceImpl citationService) {
         this.statusRepository = statusRepository;
         this.academicQualificationService = academicQualificationService;
         this.awardService = awardService;
@@ -40,6 +42,7 @@ public class StatusServiceImpl implements StatusService {
         this.publicationService = publicationService;
         this.studentService = studentService;
         this.workExperienceService = workExperienceService;
+        this.citationService = citationService;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class StatusServiceImpl implements StatusService {
             statusDto.setPublication(statusDao.isPublication());
             statusDto.setStudent(statusDao.isStudent());
             statusDto.setWorkExperience(statusDao.isWorkExperience());
+            statusDto.setCitation(statusDao.isCitation());
             return statusDto;
         }
 
@@ -77,6 +81,7 @@ public class StatusServiceImpl implements StatusService {
         statusDao.setPublication(statusDto.isPublication());
         statusDao.setStudent(statusDto.isStudent());
         statusDao.setWorkExperience(statusDto.isWorkExperience());
+        statusDao.setCitation(statusDto.isCitation());
         statusRepository.save(statusDao);
 
         if (!statusDao.isAcademicQualification()) {
@@ -105,6 +110,12 @@ public class StatusServiceImpl implements StatusService {
         }
         if (!statusDao.isWorkExperience()) {
             workExperienceService.deleteByUserId(userid);
+        }
+
+        if (statusDao.isCitation()) {
+            citationService.createCitations(userid);
+        } else {
+            citationService.deleteCitationsByUser(userid);
         }
     }
 

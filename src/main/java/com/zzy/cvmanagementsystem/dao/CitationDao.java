@@ -1,5 +1,6 @@
 package com.zzy.cvmanagementsystem.dao;
 
+import com.zzy.cvmanagementsystem.model.Database;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,18 +13,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDao {
+public class CitationDao {
     @Id
     private String id;
 
-    private String email;
+    private Database database;
 
-    private String username;
+    private int countWithSelf;
 
-    private String password;
+    private int countWithoutSelf;
 
-    private String shortname;
+    private int hIndex;
 
-    private String gsAuthorId;
+    private String userId;
 
 }

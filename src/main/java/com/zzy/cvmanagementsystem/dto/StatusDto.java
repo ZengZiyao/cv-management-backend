@@ -34,4 +34,6 @@ public class StatusDto {
 
     private boolean workExperience;
 
+    private boolean citation;
+
 }

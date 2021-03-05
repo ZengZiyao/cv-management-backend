@@ -37,4 +37,6 @@ public class StatusDao {
     private boolean student;
 
     private boolean workExperience;
+
+    private boolean citation;
 }

@@ -7,19 +7,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+@AllArgsConstructor
+public class CitationDto {
     private String id;
 
-    private String username;
+    private int database;
 
-    private String email;
+    private int countWithSelf;
 
-    private String password;
+    private int countWithoutSelf;
 
-    private String shortname;
-
-    private String gsAuthorId;
-
+    private int hIndex;
 }
