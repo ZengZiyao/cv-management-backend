@@ -26,7 +26,7 @@ public class BiographyController {
     @GetMapping("")
     public ResponseEntity getBiography(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         return ResponseEntity.ok(biographyService.getBiography(userid));
     }
@@ -34,7 +34,7 @@ public class BiographyController {
     @PostMapping("")
     public ResponseEntity addBiography(@RequestBody BiographyDto biographyDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
         biographyService.addBiography(biographyDto, userid);
 
         return ResponseEntity.noContent().build();

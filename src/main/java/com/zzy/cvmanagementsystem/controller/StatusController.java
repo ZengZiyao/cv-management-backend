@@ -25,7 +25,7 @@ public class StatusController {
     @GetMapping("")
     public ResponseEntity getStatus(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         StatusDto statusDto = statusService.getStatus(userid);
 
@@ -35,7 +35,7 @@ public class StatusController {
     @PutMapping("/{id}")
     public ResponseEntity updateStatus(@PathVariable String id, @RequestBody StatusDto statusDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         statusService.updateStatus(userid, id, statusDto);
         return ResponseEntity.noContent().build();

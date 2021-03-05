@@ -1,5 +1,6 @@
 package com.zzy.cvmanagementsystem.service;
 
+import com.zzy.cvmanagementsystem.dao.UserDao;
 import com.zzy.cvmanagementsystem.dto.Credential;
 import com.zzy.cvmanagementsystem.dto.UserDto;
 
@@ -8,7 +9,9 @@ public interface UserService {
 
     String signIn(Credential credential);
 
-    UserDto getUser(String username);
+    UserDto getUserByUsername(String username);
+
+    UserDao getUserById(String id);
 
     void updateUser(UserDto userDto);
 

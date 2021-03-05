@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(String username) {
+    public UserDto getUserByUsername(String username) {
         UserDao userDao = userRepository.findByUsername(username);
         if (userDao != null) {
             UserDto userDto = new UserDto();
@@ -81,6 +81,11 @@ public class UserServiceImpl implements UserService {
         }
 
         throw new NotFoundException("user not found");
+    }
+
+    @Override
+    public UserDao getUserById(String id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override

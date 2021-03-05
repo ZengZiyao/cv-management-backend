@@ -28,7 +28,7 @@ public class AcademicQualificationController {
     @GetMapping("")
     public ResponseEntity getAllAcademicQualifications(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<AcademicQualificationDto> academicQualificationDtos = academicQualificationService.getAllAcademicQualifications(userid);
 
@@ -38,7 +38,7 @@ public class AcademicQualificationController {
     @PostMapping("")
     public ResponseEntity addAcademicQualification(@RequestBody AcademicQualificationDto academicQualificationDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
         academicQualificationService.addAcademicQualification(academicQualificationDto, userid);
 
         return ResponseEntity.noContent().build();

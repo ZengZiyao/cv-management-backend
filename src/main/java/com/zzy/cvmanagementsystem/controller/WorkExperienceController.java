@@ -26,7 +26,7 @@ public class WorkExperienceController {
     @GetMapping("")
     public ResponseEntity getAllWorkExperiences(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<WorkExperienceDto> workExperienceDtos = workExperienceService.getAllWorkExperiences(userid);
 
@@ -36,7 +36,7 @@ public class WorkExperienceController {
     @PostMapping("")
     public ResponseEntity addWorkExperience(@RequestBody WorkExperienceDto workExperienceDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         workExperienceService.addWorkExperience(workExperienceDto, userid);
 

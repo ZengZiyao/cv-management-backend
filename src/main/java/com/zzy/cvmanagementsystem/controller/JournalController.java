@@ -26,7 +26,7 @@ public class JournalController {
     @GetMapping("")
     public ResponseEntity getAllJournals(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<JournalDto> journalDtos = journalService.getAllJournals(userid);
 
@@ -36,7 +36,7 @@ public class JournalController {
     @PostMapping("")
     public ResponseEntity addJournal(@RequestBody String name, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         journalService.addJournal(name, userid);
 
@@ -46,7 +46,7 @@ public class JournalController {
     @PutMapping("")
     public ResponseEntity updateJournals(@RequestBody List<JournalDto> journalDtos, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         journalService.updateJournals(userid, journalDtos);
 

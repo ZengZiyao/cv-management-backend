@@ -29,7 +29,7 @@ public class AwardController {
     @GetMapping("")
     public ResponseEntity getAllAwards(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<AwardDto> awardDtos = awardService.getAllAwards(userid);
 
@@ -39,7 +39,7 @@ public class AwardController {
     @PostMapping("")
     public ResponseEntity addAward(@RequestBody AwardDto awardDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         awardService.addAward(awardDto, userid);
 

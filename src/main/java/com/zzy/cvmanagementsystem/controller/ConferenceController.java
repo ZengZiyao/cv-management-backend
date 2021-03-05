@@ -26,7 +26,7 @@ public class ConferenceController {
     @GetMapping("")
     public ResponseEntity getAllConferences(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<ConferenceDto> conferenceDtos = conferenceService.getAllConferences(userid);
 
@@ -36,7 +36,7 @@ public class ConferenceController {
     @PostMapping("")
     public ResponseEntity addConference(@RequestBody String name, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         conferenceService.addConference(name, userid);
 
@@ -46,7 +46,7 @@ public class ConferenceController {
     @PutMapping("")
     public ResponseEntity updateConferences(@RequestBody List<ConferenceDto> conferenceDtos, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         conferenceService.updateConferences(userid, conferenceDtos);
 

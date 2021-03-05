@@ -1,15 +1,17 @@
 package com.zzy.cvmanagementsystem.service.impl;
 
+import com.zzy.cvmanagementsystem.dao.ConnectionDao;
 import com.zzy.cvmanagementsystem.dao.PublicationDao;
+import com.zzy.cvmanagementsystem.dao.StatusDao;
+import com.zzy.cvmanagementsystem.dao.UserDao;
 import com.zzy.cvmanagementsystem.dto.PublicationDto;
 import com.zzy.cvmanagementsystem.exception.NotFoundException;
 import com.zzy.cvmanagementsystem.model.PubSource;
 import com.zzy.cvmanagementsystem.model.PubType;
-import com.zzy.cvmanagementsystem.repository.ConferenceRepository;
-import com.zzy.cvmanagementsystem.repository.JournalRepository;
-import com.zzy.cvmanagementsystem.repository.PublicationRepository;
+import com.zzy.cvmanagementsystem.repository.*;
 import com.zzy.cvmanagementsystem.service.PublicationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,11 +24,20 @@ public class PublicationServiceImpl implements PublicationService {
     private PublicationRepository publicationRepository;
     private JournalRepository journalRepository;
     private ConferenceRepository conferenceRepository;
+    private ConnectionRepository connectionRepository;
+    private StatusRepository statusRepository;
+    private UserRepository userRepository;
 
-    PublicationServiceImpl(PublicationRepository publicationRepository, JournalRepository journalRepository, ConferenceRepository conferenceRepository) {
+    PublicationServiceImpl(PublicationRepository publicationRepository, JournalRepository journalRepository, ConferenceRepository conferenceRepository,
+                           ConnectionRepository connectionRepository,
+                           StatusRepository statusRepository,
+                           UserRepository userRepository) {
         this.publicationRepository = publicationRepository;
         this.journalRepository = journalRepository;
         this.conferenceRepository = conferenceRepository;
+        this.connectionRepository = connectionRepository;
+        this.statusRepository = statusRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,11 +53,31 @@ public class PublicationServiceImpl implements PublicationService {
         publicationDao.setTitle(publicationDto.getTitle());
         publicationDao.setUserId(userid);
         publicationRepository.save(publicationDao);
+
+        ConnectionDao connectionDao = new ConnectionDao();
+        connectionDao.setUserId(userid);
+        List<ConnectionDao> connectionDaoList = connectionRepository.findAll(Example.of(connectionDao));
+        for (ConnectionDao c :
+                connectionDaoList) {
+            StatusDao statusDao = statusRepository.findByUserId(c.getFollowerId());
+            UserDao userDao = userRepository.findById(c.getFollowerId()).orElse(null);
+            if (statusDao != null && statusDao.isPublication() && userDao != null && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
+                publicationDao.setUserId(c.getFollowerId());
+                publicationDao.setId(null);
+                publicationRepository.save(publicationDao);
+            }
+        }
     }
 
     @Override
     public void updatePublication(String id, PublicationDto publicationDto) {
         PublicationDao publicationDao = publicationRepository.findById(id).orElseThrow(() -> new NotFoundException("Publication not found"));
+        updatePublicationDao(publicationDao, publicationDto);
+        publicationRepository.save(publicationDao);
+
+    }
+
+    private void updatePublicationDao(PublicationDao publicationDao, PublicationDto publicationDto) {
         publicationDao.setAuthors(publicationDto.getAuthors());
         publicationDao.setDate(publicationDto.getDate());
         publicationDao.setSourceId(publicationDto.getPubSource().getId());
@@ -65,10 +96,6 @@ public class PublicationServiceImpl implements PublicationService {
             publicationDao.setTier(publicationDto.getTier());
         }
         publicationDao.setType(publicationDto.getType());
-
-
-        publicationRepository.save(publicationDao);
-
     }
 
     @Override

@@ -24,7 +24,7 @@ public class MembershipController {
     @GetMapping("")
     public ResponseEntity getAllMemberships(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<MembershipDto> membershipDtos = membershipService.getAllMemberships(userid);
         return ResponseEntity.ok(membershipDtos);
@@ -33,7 +33,7 @@ public class MembershipController {
     @PostMapping("")
     public ResponseEntity addMembership(@RequestBody MembershipDto membershipDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         membershipService.AddMembership(membershipDto, userid);
         return ResponseEntity.noContent().build();

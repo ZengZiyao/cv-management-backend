@@ -27,7 +27,7 @@ public class InfoController {
     @GetMapping("")
     public ResponseEntity getInfo(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         return ResponseEntity.ok(infoService.getInfo(userid));
     }
@@ -35,7 +35,7 @@ public class InfoController {
     @PostMapping("")
     public ResponseEntity addInfo(@RequestBody InfoDto infoDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         infoService.addInfo(infoDto, userid);
 

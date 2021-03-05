@@ -28,7 +28,7 @@ public class StudentController {
     @GetMapping("")
     public ResponseEntity getAllStudents(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<StudentDto> studentDtos = studentService.getAllStudents(userid);
 
@@ -38,7 +38,7 @@ public class StudentController {
     @GetMapping("/masters")
     public ResponseEntity getAllMasterStudents(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<StudentDto> studentDtos = studentService.getAllMasterStudents(userid);
 
@@ -48,7 +48,7 @@ public class StudentController {
     @GetMapping("/phds")
     public ResponseEntity getAllPhdStudents(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<StudentDto> studentDtos = studentService.getAllPhdStudents(userid);
 
@@ -58,7 +58,7 @@ public class StudentController {
     @PostMapping("")
     public ResponseEntity addStudent(@RequestBody StudentDto studentDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         studentService.addStudent(studentDto, userid);
 

@@ -74,7 +74,7 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserDto> getUser(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        UserDto userDto = userService.getUser(username);
+        UserDto userDto = userService.getUserByUsername(username);
         return ResponseEntity.ok(userDto);
     }
 
@@ -87,7 +87,7 @@ public class UserController {
     @PatchMapping("/profile/password")
     public ResponseEntity updatePassword(@RequestBody String password, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         userService.updatePassword(userid, password);
         return ResponseEntity.noContent().build();

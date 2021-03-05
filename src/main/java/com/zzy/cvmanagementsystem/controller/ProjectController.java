@@ -28,7 +28,7 @@ public class ProjectController {
     @GetMapping("")
     public ResponseEntity<List<ProjectDto>> getAllProjects(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<ProjectDto> projectDtos = projectService.getAllProject(userid);
         return ResponseEntity.ok(projectDtos);
@@ -37,7 +37,7 @@ public class ProjectController {
     @PostMapping("")
     public ResponseEntity addProject(@RequestBody ProjectDto projectDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         projectService.addProject(projectDto, userid);
         return ResponseEntity.noContent().build();

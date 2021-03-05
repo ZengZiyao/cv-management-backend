@@ -28,7 +28,7 @@ public class CourseController {
     @GetMapping("")
     public ResponseEntity getAllCourses(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<CourseDto> courseDtos = courseService.getAllCourses(userid);
 
@@ -38,7 +38,7 @@ public class CourseController {
     @PostMapping("")
     public ResponseEntity addCourse(@RequestBody CourseDto courseDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         courseService.addCourse(courseDto, userid);
 

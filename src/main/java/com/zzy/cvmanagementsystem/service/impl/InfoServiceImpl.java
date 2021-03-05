@@ -44,16 +44,16 @@ public class InfoServiceImpl implements InfoService {
     public InfoDto getInfo(String userid) {
 
         InfoDao infoDao = infoRepository.findByUserId(userid);
+        InfoDto infoDto = new InfoDto();
+
         if (infoDao != null) {
-            InfoDto infoDto = new InfoDto();
             infoDto.setDesignation(infoDao.getDesignation());
             infoDto.setName(infoDao.getName());
             infoDto.setSchool(infoDao.getSchool());
             infoDto.setId((infoDao.getId()));
-            return infoDto;
         }
 
-        throw new NotFoundException("Info not found");
+        return infoDto;
     }
 
     @Override
@@ -63,6 +63,10 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public void deleteByUserId(String userid) {
-        infoRepository.delete(infoRepository.findByUserId(userid));
+        InfoDao infoDao = infoRepository.findByUserId(userid);
+
+        if (infoDao != null) {
+            infoRepository.delete(infoDao);
+        }
     }
 }

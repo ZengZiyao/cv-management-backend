@@ -26,7 +26,7 @@ public class PublicationController {
     @GetMapping("")
     public ResponseEntity getAllPublications(HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         List<PublicationDto> publicationDtoList = publicationService.getAllPublication(userid);
 
@@ -36,7 +36,7 @@ public class PublicationController {
     @PostMapping("")
     public ResponseEntity addPublication(@RequestBody PublicationDto publicationDto, HttpServletRequest httpServletRequest) {
         String username = httpServletRequest.getUserPrincipal().getName();
-        String userid = userService.getUser(username).getId();
+        String userid = userService.getUserByUsername(username).getId();
 
         publicationService.addPublication(publicationDto, userid);
 
