@@ -52,7 +52,6 @@ public class StatusServiceImpl implements StatusService {
             StatusDto statusDto = new StatusDto();
             statusDto.setAcademicQualification(statusDao.isAcademicQualification());
             statusDto.setAward(statusDao.isAward());
-            statusDto.setBiography(statusDao.isBiography());
             statusDto.setCourse(statusDao.isCourse());
             statusDto.setId(statusDao.getId());
             statusDto.setMembership(statusDao.isMembership());
@@ -73,7 +72,6 @@ public class StatusServiceImpl implements StatusService {
         StatusDao statusDao = statusRepository.findById(id).orElseThrow(() -> new NotFoundException("Status not found"));
         statusDao.setAcademicQualification(statusDto.isAcademicQualification());
         statusDao.setAward(statusDto.isAward());
-        statusDao.setBiography(statusDto.isBiography());
         statusDao.setCourse(statusDto.isCourse());
         statusDao.setMembership(statusDto.isMembership());
         statusDao.setProfile(statusDto.isProfile());

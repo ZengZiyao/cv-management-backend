@@ -64,9 +64,13 @@ public class CitationServiceImpl implements CitationService {
         CitationDao c = new CitationDao();
         c.setUserId(userid);
         c.setDatabase(Database.GOOGLE_SCHOLAR);
-        CitationDao citationDao = citationRepository.findAll(Example.of(c)).get(0);
-        citationDao.setCountWithSelf(citationDto.getCountWithSelf());
-        citationDao.setHIndex(citationDto.getHIndex());
-        citationRepository.save(citationDao);
+        List<CitationDao> citationDaoList = citationRepository.findAll(Example.of(c));
+        if (citationDaoList != null && !citationDaoList.isEmpty()) {
+            CitationDao citationDao = citationDaoList.get(0);
+            citationDao.setCountWithSelf(citationDto.getCountWithSelf());
+            citationDao.setHIndex(citationDto.getHIndex());
+            citationRepository.save(citationDao);
+        }
+
     }
 }

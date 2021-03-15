@@ -22,8 +22,6 @@ public class StatusDao {
 
     private boolean award;
 
-    private boolean biography;
-
     private boolean course;
 
     private boolean profile;

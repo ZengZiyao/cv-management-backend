@@ -18,8 +18,6 @@ public class StatusDto {
 
     private boolean award;
 
-    private boolean biography;
-
     private boolean course;
 
     private boolean profile;
