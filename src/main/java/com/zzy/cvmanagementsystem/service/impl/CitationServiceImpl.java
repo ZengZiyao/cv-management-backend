@@ -27,7 +27,7 @@ public class CitationServiceImpl implements CitationService {
 
         for (CitationDao citationDao :
                 citationDaoList) {
-            CitationDto citationDto = new CitationDto(citationDao.getId(), citationDao.getDatabase().ordinal(), citationDao.getCountWithSelf(), citationDao.getCountWithoutSelf(), citationDao.getHIndex());
+            CitationDto citationDto = new CitationDto(citationDao.getId(), citationDao.getDatabase().ordinal(), citationDao.getCountWithSelf(), citationDao.getCountWithoutSelf(), citationDao.getHindex());
             citationDtoList.add(citationDto);
         }
         return citationDtoList;
@@ -38,7 +38,7 @@ public class CitationServiceImpl implements CitationService {
         CitationDao citationDao = citationRepository.findById(id).orElseThrow(() -> new NotFoundException("citation not found"));
         citationDao.setCountWithoutSelf(citationDto.getCountWithoutSelf());
         citationDao.setCountWithSelf(citationDto.getCountWithSelf());
-        citationDao.setHIndex(citationDto.getHIndex());
+        citationDao.setHindex(citationDto.getHindex());
         citationRepository.save(citationDao);
     }
 
@@ -68,7 +68,7 @@ public class CitationServiceImpl implements CitationService {
         if (citationDaoList != null && !citationDaoList.isEmpty()) {
             CitationDao citationDao = citationDaoList.get(0);
             citationDao.setCountWithSelf(citationDto.getCountWithSelf());
-            citationDao.setHIndex(citationDto.getHIndex());
+            citationDao.setHindex(citationDto.getHindex());
             citationRepository.save(citationDao);
         }
 

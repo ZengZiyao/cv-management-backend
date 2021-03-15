@@ -1,7 +1,6 @@
 package com.zzy.cvmanagementsystem.dto;
 
 import com.zzy.cvmanagementsystem.model.Author;
-import com.zzy.cvmanagementsystem.model.Country;
 import com.zzy.cvmanagementsystem.model.PubSource;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class PublicationDto {
 
     private PubSource pubSource;
 
-    private Country Country;
+    private String Country;
 
     private String tier;
 

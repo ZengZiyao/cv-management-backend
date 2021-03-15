@@ -3,6 +3,8 @@ package com.zzy.cvmanagementsystem.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class ProjectDto {
@@ -11,9 +13,9 @@ public class ProjectDto {
 
     private String title;
 
-    private int startYear;
+    private Date startYear;
 
-    private int endYear;
+    private Date endYear;
 
     private String role;
 

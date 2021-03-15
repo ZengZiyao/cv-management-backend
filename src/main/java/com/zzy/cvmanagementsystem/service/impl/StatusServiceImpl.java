@@ -111,7 +111,9 @@ public class StatusServiceImpl implements StatusService {
         }
 
         if (statusDao.isCitation()) {
-            citationService.createCitations(userid);
+            if (citationService.getAllCitations(userid).isEmpty()) {
+                citationService.createCitations(userid);
+            }
         } else {
             citationService.deleteCitationsByUser(userid);
         }

@@ -18,5 +18,5 @@ public class CitationDto {
 
     private int countWithoutSelf;
 
-    private int hIndex;
+    private int hindex;
 }

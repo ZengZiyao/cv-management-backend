@@ -23,7 +23,7 @@ public class CitationDao {
 
     private int countWithoutSelf;
 
-    private int hIndex;
+    private int hindex;
 
     private String userId;
 

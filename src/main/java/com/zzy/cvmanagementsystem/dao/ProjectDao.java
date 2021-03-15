@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document
 @Getter
 @Setter
@@ -14,9 +16,9 @@ public class ProjectDao {
 
     private String title;
 
-    private int startYear;
+    private Date startYear;
 
-    private int endYear;
+    private Date endYear;
 
     private String role;
 

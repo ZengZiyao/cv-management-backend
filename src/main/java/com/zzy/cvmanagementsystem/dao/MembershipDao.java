@@ -1,6 +1,5 @@
 package com.zzy.cvmanagementsystem.dao;
 
-import com.zzy.cvmanagementsystem.model.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +26,7 @@ public class MembershipDao {
 
     private String institution;
 
-    private Country country;
+    private String country;
 
     private String state;
 

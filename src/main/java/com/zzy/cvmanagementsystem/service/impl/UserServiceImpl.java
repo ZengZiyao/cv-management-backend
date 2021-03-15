@@ -113,12 +113,12 @@ public class UserServiceImpl implements UserService {
         List<UserDto> userDtoList = new ArrayList<>();
         for (UserDao userDao :
                 userDaoList) {
-         if (userDao.getGsAuthorId() != null && !userDao.getGsAuthorId().isEmpty()) {
-             UserDto userDto = new UserDto();
-             userDto.setId(userDao.getId());
-             userDto.setGsAuthorId(userDao.getGsAuthorId());
-             userDtoList.add(userDto);
-         }
+            if (userDao.getGsAuthorId() != null && !userDao.getGsAuthorId().isEmpty()) {
+                UserDto userDto = new UserDto();
+                userDto.setId(userDao.getId());
+                userDto.setGsAuthorId(userDao.getGsAuthorId());
+                userDtoList.add(userDto);
+            }
         }
         return userDtoList;
     }

@@ -10,8 +10,9 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ThreadPoolTaskSchedulerConfig {
     final int POOL_SIZE = 5;
+
     @Bean
-    public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler
                 = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setPoolSize(POOL_SIZE);

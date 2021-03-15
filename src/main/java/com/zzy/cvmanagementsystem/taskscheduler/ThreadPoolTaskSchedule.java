@@ -53,7 +53,7 @@ public class ThreadPoolTaskSchedule {
                 if (results.size() == 2) {
                     CitationDto citationDto = new CitationDto();
                     citationDto.setCountWithSelf(results.get(0));
-                    citationDto.setHIndex(results.get(1));
+                    citationDto.setHindex(results.get(1));
                     citationService.updateGSCitation(userDto.getId(), citationDto);
                 }
             }
@@ -75,7 +75,9 @@ public class ThreadPoolTaskSchedule {
                 while ((line = bfr.readLine()) != null) {
                     result.add(Integer.parseInt(line));
                 }
-            } catch (Exception e){System.out.println(e);}
+            } catch (Exception e) {
+                System.out.println(e);
+            }
 
             return result;
         }
