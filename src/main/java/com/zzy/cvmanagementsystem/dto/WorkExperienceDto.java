@@ -3,6 +3,8 @@ package com.zzy.cvmanagementsystem.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class WorkExperienceDto {
@@ -11,9 +13,9 @@ public class WorkExperienceDto {
 
     private String title;
 
-    private String startTime;
+    private Date startTime;
 
-    private String endTime;
+    private Date endTime;
 
     private String company;
 }
