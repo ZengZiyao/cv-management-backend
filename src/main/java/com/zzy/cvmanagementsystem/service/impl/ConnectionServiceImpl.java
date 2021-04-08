@@ -4,6 +4,7 @@ import com.zzy.cvmanagementsystem.dao.ConnectionDao;
 import com.zzy.cvmanagementsystem.dao.UserDao;
 import com.zzy.cvmanagementsystem.dto.ConnectionDto;
 import com.zzy.cvmanagementsystem.dto.UserDto;
+import com.zzy.cvmanagementsystem.exception.BadRequestException;
 import com.zzy.cvmanagementsystem.exception.NotFoundException;
 import com.zzy.cvmanagementsystem.model.ConnectionStatus;
 import com.zzy.cvmanagementsystem.repository.ConnectionRepository;
@@ -97,10 +98,16 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public void requestConnection(String username, String followerUsername) {
-        log.info(username);
-        log.info(followerUsername);
         UserDto userDto = userService.getUserByUsername(username);
         UserDto follower = userService.getUserByUsername(followerUsername);
+
+        ConnectionDao c = new ConnectionDao();
+        c.setUserId(userDto.getId());
+        c.setFollowerId(follower.getId());
+        c.setConnectionStatus(ConnectionStatus.ACCEPTED);
+        if (connectionRepository.findOne(Example.of(c)).isPresent()) {
+            throw new BadRequestException("connection has already built");
+        }
         ConnectionDao connectionDao = new ConnectionDao();
         connectionDao.setUpdateTime(new Date());
         connectionDao.setConnectionStatus(ConnectionStatus.PENDING);

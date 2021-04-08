@@ -85,11 +85,19 @@ public class UserController {
     }
 
     @PatchMapping("/profile/password")
-    public ResponseEntity updatePassword(@RequestBody String password, HttpServletRequest httpServletRequest) {
+    public ResponseEntity updatePassword(@RequestBody Map<String, String> map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String username = httpServletRequest.getUserPrincipal().getName();
         String userid = userService.getUserByUsername(username).getId();
+        log.info(map.get("old"));
+        userService.updatePassword(userid, map.get("old"), map.get("new"));
 
-        userService.updatePassword(userid, password);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication);
+        }
+
+        jwtTokenUtil.invalidateToken(jwtTokenUtil.getTokenFromRequest(httpServletRequest));
+
         return ResponseEntity.noContent().build();
     }
 }

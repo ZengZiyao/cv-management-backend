@@ -17,7 +17,7 @@ public interface UserService {
 
     void updateUser(UserDto userDto);
 
-    void updatePassword(String userid, String password);
+    void updatePassword(String userid, String oldPassword, String password);
 
     List<UserDto> getAllUsersWithGS();
 }

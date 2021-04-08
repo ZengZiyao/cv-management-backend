@@ -4,6 +4,7 @@ import com.zzy.cvmanagementsystem.common.utils.JwtTokenUtil;
 import com.zzy.cvmanagementsystem.dao.UserDao;
 import com.zzy.cvmanagementsystem.dto.Credential;
 import com.zzy.cvmanagementsystem.dto.UserDto;
+import com.zzy.cvmanagementsystem.exception.BadRequestException;
 import com.zzy.cvmanagementsystem.exception.DuplicateException;
 import com.zzy.cvmanagementsystem.exception.NotFoundException;
 import com.zzy.cvmanagementsystem.repository.UserRepository;
@@ -101,10 +102,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String userid, String password) {
+    public void updatePassword(String userid, String oldPassword, String password) {
         UserDao userDao = userRepository.findById(userid).orElseThrow(() -> new NotFoundException("user not found"));
-        userDao.setPassword(passwordEncoder.encode(password));
-        userRepository.save(userDao);
+        if (passwordEncoder.matches(oldPassword, userDao.getPassword())) {
+            userDao.setPassword(passwordEncoder.encode(password));
+            userRepository.save(userDao);
+        } else {
+            throw new BadRequestException("wrong password");
+        }
     }
 
     @Override

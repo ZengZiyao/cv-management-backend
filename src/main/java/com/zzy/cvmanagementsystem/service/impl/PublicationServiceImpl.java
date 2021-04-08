@@ -52,19 +52,23 @@ public class PublicationServiceImpl implements PublicationService {
         publicationDao.setTier(publicationDto.getTier());
         publicationDao.setTitle(publicationDto.getTitle());
         publicationDao.setUserId(userid);
+        savePublication(publicationDao);
+    }
+
+    private void savePublication(PublicationDao publicationDao) {
         publicationRepository.save(publicationDao);
 
         ConnectionDao connectionDao = new ConnectionDao();
-        connectionDao.setUserId(userid);
+        connectionDao.setUserId(publicationDao.getUserId());
         List<ConnectionDao> connectionDaoList = connectionRepository.findAll(Example.of(connectionDao));
         for (ConnectionDao c :
                 connectionDaoList) {
             StatusDao statusDao = statusRepository.findByUserId(c.getFollowerId());
             UserDao userDao = userRepository.findById(c.getFollowerId()).orElse(null);
-            if (statusDao != null && statusDao.isPublication() && userDao != null && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
+            if (statusDao != null && statusDao.isPublication() && userDao != null && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle())) && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
                 publicationDao.setUserId(c.getFollowerId());
                 publicationDao.setId(null);
-                publicationRepository.save(publicationDao);
+                savePublication(publicationDao);
             }
         }
     }
