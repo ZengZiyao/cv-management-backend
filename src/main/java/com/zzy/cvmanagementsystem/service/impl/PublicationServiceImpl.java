@@ -65,7 +65,11 @@ public class PublicationServiceImpl implements PublicationService {
                 connectionDaoList) {
             StatusDao statusDao = statusRepository.findByUserId(c.getFollowerId());
             UserDao userDao = userRepository.findById(c.getFollowerId()).orElse(null);
-            if (statusDao != null && statusDao.isPublication() && userDao != null && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle())) && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
+            if (statusDao != null
+                    && statusDao.isPublication()
+                    && userDao != null
+                    && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle()))
+                    && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
                 publicationDao.setUserId(c.getFollowerId());
                 publicationDao.setId(null);
                 savePublication(publicationDao);
