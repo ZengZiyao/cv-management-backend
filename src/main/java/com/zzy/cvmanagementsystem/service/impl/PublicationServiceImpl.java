@@ -68,8 +68,8 @@ public class PublicationServiceImpl implements PublicationService {
             if (statusDao != null
                     && statusDao.isPublication()
                     && userDao != null
-                    && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle()))
-                    && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))) {
+                    && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))
+                    && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle()))) {
                 publicationDao.setUserId(c.getFollowerId());
                 publicationDao.setId(null);
                 savePublication(publicationDao);
