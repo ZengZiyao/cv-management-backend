@@ -15,7 +15,9 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -52,10 +54,11 @@ public class PublicationServiceImpl implements PublicationService {
         publicationDao.setTier(publicationDto.getTier());
         publicationDao.setTitle(publicationDto.getTitle());
         publicationDao.setUserId(userid);
-        savePublication(publicationDao);
+        Set<String> synced = new HashSet<>();
+        savePublication(publicationDao, synced);
     }
 
-    private void savePublication(PublicationDao publicationDao) {
+    private void savePublication(PublicationDao publicationDao, Set<String> synced) {
         publicationRepository.save(publicationDao);
 
         ConnectionDao connectionDao = new ConnectionDao();
@@ -63,16 +66,20 @@ public class PublicationServiceImpl implements PublicationService {
         List<ConnectionDao> connectionDaoList = connectionRepository.findAll(Example.of(connectionDao));
         for (ConnectionDao c :
                 connectionDaoList) {
-            StatusDao statusDao = statusRepository.findByUserId(c.getFollowerId());
-            UserDao userDao = userRepository.findById(c.getFollowerId()).orElse(null);
-            if (statusDao != null
-                    && statusDao.isPublication()
-                    && userDao != null
-                    && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))
-                    && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle()))) {
-                publicationDao.setUserId(c.getFollowerId());
-                publicationDao.setId(null);
-                savePublication(publicationDao);
+            if (!synced.contains(c.getFollowerId())) {
+                synced.add(c.getFollowerId());
+                StatusDao statusDao = statusRepository.findByUserId(c.getFollowerId());
+                UserDao userDao = userRepository.findById(c.getFollowerId()).orElse(null);
+                if (statusDao != null
+                        && statusDao.isPublication()
+                        && userDao != null
+                        && publicationDao.getAuthors().stream().anyMatch((a) -> a.getName().equals(userDao.getShortname()))
+                        && getAllPublication(c.getFollowerId()).stream().noneMatch(p -> p.getTitle().equals(publicationDao.getTitle()))) {
+                    publicationDao.setUserId(c.getFollowerId());
+                    publicationDao.setId(null);
+                    savePublication(publicationDao, synced);
+
+                }
             }
         }
     }
